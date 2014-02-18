@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:padding="10dp"
+    android:id="@+id/layout_image"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
+
+
+    <!-- item image -->
+    <ImageView
+        android:id="@+id/image_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:paddingBottom="2dip"
+        android:padding="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="10dp"/>
+
+    <!-- Title Label -->
+
+
+    <RelativeLayout
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/image_list"
+        android:layout_width="match_parent">
+
+            <TextView
+                android:id="@+id/title_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:textColor="#979797"
+                android:paddingTop="6dip"
+                android:paddingLeft="10dp"
+                android:textSize="14sp"/>
+
+            <!-- Price label -->
+
+            <TextView
+                android:id="@+id/price_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title_list"
+                android:layout_alignParentLeft="true"
+                android:textColor="#ac0d0b"
+                android:textStyle="bold"
+                android:paddingBottom="2dip"
+                android:padding="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"/>
+
+
+            <!-- Id label -->
+            <TextView
+                android:id="@+id/id_item_list"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+</RelativeLayout>

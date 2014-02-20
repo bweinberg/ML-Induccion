@@ -1,6 +1,7 @@
 package com.mercadolibre.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Item implements Serializable {
 
@@ -10,15 +11,17 @@ public class Item implements Serializable {
     private String thumbnail;
     private String available_quantity;
     private String stop_time;
+    private List<Picture> pictures;
 
 
-    public Item(String id, String title, String price, String thumbnail, String available_quantity, String stop_time) {
+    public Item(String id, String title, String price, String thumbnail, String available_quantity, String stop_time, List<Picture> pictures) {
         this.id = id;
         this.title = title;
         this.price = price;
         this.thumbnail = thumbnail;
         this.available_quantity = available_quantity;
         this.stop_time = stop_time;
+        this.pictures = pictures;
     }
 
     public String getId() {
@@ -39,7 +42,7 @@ public class Item implements Serializable {
     }
 
     public String getPrice() {
-        return price;
+        return "$ " + price;
     }
 
     public void setPrice(String price) {
@@ -68,5 +71,14 @@ public class Item implements Serializable {
 
     public void setStop_time(String stop_time) {
         this.stop_time = stop_time;
+    }
+
+
+    public List<Picture> getPictures() {
+        return pictures;
+    }
+
+    public void setPictures(List<Picture> pictures) {
+        this.pictures = pictures;
     }
 }

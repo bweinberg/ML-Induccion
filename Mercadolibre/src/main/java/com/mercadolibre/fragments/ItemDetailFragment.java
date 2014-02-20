@@ -77,7 +77,7 @@ public class ItemDetailFragment extends ListFragment {
         endDateTv = (TextView)view.findViewById(R.id.end_date);
         picIv = (ImageView)view.findViewById(R.id.pic);
         Picasso.with(getActivity())
-               .load(itemSelected.getThumbnail())
+               .load(itemSelected.getPictures().get(0).getUrl())
                .into(picIv);
 
         //  .resize(MAX_IMAGE_SIZE, MAX_IMAGE_SIZE)

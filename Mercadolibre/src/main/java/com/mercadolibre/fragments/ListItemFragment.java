@@ -2,14 +2,12 @@ package com.mercadolibre.fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.mercadolibre.activities.R;
@@ -32,7 +30,6 @@ public class ListItemFragment extends Fragment {
 
     // Boolean to control the loading of more pages
     private static boolean loading;
-    private static ProgressBar footerTv;
     private static String totalResult;
     private static String siteId;
 

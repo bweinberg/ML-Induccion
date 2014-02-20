@@ -117,9 +117,9 @@ public class GetItemsAsyncTask extends AsyncTask<Void, Void, ArrayList> {
 
                     String currency = "$ ";
                     price=currency+price;
-                    Item item = new Item(id, title, price, urlPic, null, null);
+          //          Item item = new Item(id, title, price, urlPic, null, null);
 
-                    itemList.add(item);
+         //           itemList.add(item);
 
                 }
 

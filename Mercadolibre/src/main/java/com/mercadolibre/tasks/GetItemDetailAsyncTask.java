@@ -80,7 +80,7 @@ public class GetItemDetailAsyncTask extends AsyncTask<String, Void, Item> {
                 String currency = "$ ";
                 price=currency+price;
                 String available = "Cantidad disponible: " + jsonObj.getString(TAG_AVAILABLE);
-                item = new Item(TAG_ID, title, price, urlPic, available, endDate);
+            //    item = new Item(TAG_ID, title, price, urlPic, available, endDate);
 
 
             } catch (JSONException e) {

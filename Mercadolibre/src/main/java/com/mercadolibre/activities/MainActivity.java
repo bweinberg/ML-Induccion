@@ -19,8 +19,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-
 import com.mercadolibre.dto.Item;
 import com.mercadolibre.dto.Paging;
 import com.mercadolibre.dto.Search;
@@ -30,15 +28,7 @@ import com.mercadolibre.fragments.ListItemFragment;
 import com.mercadolibre.fragments.SearchFragment;
 import com.mercadolibre.services.SearchService;
 import com.mercadolibre.tasks.GetImagesAsyncTask;
-import com.mercadolibre.tasks.GetItemDetailAsyncTask;
-import com.mercadolibre.tasks.GetItemsAsyncTask;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.List;
-
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -51,19 +41,12 @@ public class MainActivity extends ListActivity implements AsyncTaskCompleteListe
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
 
-    static JSONObject paging = null;
-    static JSONArray items = null;
-
-
-
     // Search total. Convert to int.
     static String total = "";
 
     // Search in progress
     private static ProgressDialog pDialog;
 
-    // Header with the total search and footer Progress Bar
-    private static ProgressBar footerTv;
 
     private static String mLastQuery;
     private static String TAG_REPLACE = "";
@@ -73,7 +56,10 @@ public class MainActivity extends ListActivity implements AsyncTaskCompleteListe
 
     // Hashmap for ListView
     private static ArrayList<Item> itemList = new ArrayList<Item>();
-
+    RestAdapter restAdapter = new RestAdapter.Builder()
+            .setServer("https://api.mercadolibre.com") // The base API endpoint.
+            .build();
+    SearchService endpoint = restAdapter.create(SearchService.class);
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     public void onCreate(Bundle savedInstanceState) {
@@ -129,27 +115,7 @@ public class MainActivity extends ListActivity implements AsyncTaskCompleteListe
             addDynamicFragment(sf, R.id.layout_main_to_replace);
 
 
-        }else{
-//
-//            Serializable mListInstanceState = savedInstanceState.getSerializable(LIST_INSTANCE_STATE);
-//            itemList = (ArrayList) mListInstanceState;
-//            footerTv = (ProgressBar) getLayoutInflater().inflate(R.layout.footer, getListView(),false);
-//            total = savedInstanceState.getString(TAG_TOTAL);
-//
-//            headerTv.setText(savedInstanceState.getString(TAG_HEADER));
-//            getListView().addFooterView(footerTv);
-//
-//            adapter = new SimpleAdapter(
-//                    MainActivity.this, itemList,
-//                    R.layout.list_item, new String[] { TAG_TITLE, TAG_PRICE, TAG_ID
-//            }, new int[] { R.id.title_list,
-//                    R.id.price_list, R.id.id_item_list });
-//            setListAdapter(adapter);
-//            getListView().removeFooterView(footerTv);
-
         }
-
-
 
     }
 
@@ -173,7 +139,6 @@ public class MainActivity extends ListActivity implements AsyncTaskCompleteListe
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-        // Handle your other action bar items...
 
         return super.onOptionsItemSelected(item);
     }
@@ -269,10 +234,8 @@ public class MainActivity extends ListActivity implements AsyncTaskCompleteListe
             @Override
             public void success(Search result, Response response) {
 
-                Log.d("SUCESS!", result.getSite_id());
                 ArrayList<Item> items = result.getResults();
                 Paging paging = result.getPaging();
-
                 onTaskComplete(items, paging.getTotal(), result.getSite_id(), false);
 
             }
@@ -285,15 +248,8 @@ public class MainActivity extends ListActivity implements AsyncTaskCompleteListe
         };
 
 
-        RestAdapter restAdapter = new RestAdapter.Builder()
-                .setServer("https://api.mercadolibre.com") // The base API endpoint.
-                .build();
-
-        SearchService endpoint = restAdapter.create(SearchService.class);
-        endpoint.getItems(site, callback);
-
-
-      //  new GetItemsAsyncTask(this, mLastQuery, site, false).execute();
+        endpoint.getItems(site, query, callback);
+        //new GetItemsAsyncTask(this, mLastQuery, site, false).execute();
 
     }
 
@@ -303,7 +259,24 @@ public class MainActivity extends ListActivity implements AsyncTaskCompleteListe
         pDialog.setMessage("Cargando...");
         pDialog.show();
 
-        new GetItemsAsyncTask(this, mLastQuery, site, total, true).execute();
+
+        Callback callback = new Callback<Search>() {
+            @Override
+            public void success(Search result, Response response) {
+                ArrayList<Item> items = result.getResults();
+                Paging paging = result.getPaging();
+                onTaskComplete(items, paging.getTotal(), result.getSite_id(), true);
+            }
+
+            @Override
+            public void failure(RetrofitError retrofitError) {
+                Log.d("FAILURE!", retrofitError.toString());
+            }
+        };
+
+
+        endpoint.getMoreItems(site, mLastQuery, total, callback);
+        //new GetItemsAsyncTask(this, mLastQuery, site, total, true).execute();
 
     }
 
@@ -312,7 +285,22 @@ public class MainActivity extends ListActivity implements AsyncTaskCompleteListe
 
         pDialog.setMessage("Cargando...");
         pDialog.show();
-        new GetItemDetailAsyncTask(this, id).execute();
+
+        Callback callback = new Callback<Item>() {
+
+            @Override
+            public void success(Item result, Response response) {
+                onTaskComplete(result);
+            }
+
+            @Override
+            public void failure(RetrofitError retrofitError) {
+                Log.d("FAILURE!", retrofitError.toString());
+            }
+
+        };
+        endpoint.getItem(id, callback);
+        //new GetItemDetailAsyncTask(this, id).execute();
 
     }
 
@@ -353,19 +341,16 @@ public class MainActivity extends ListActivity implements AsyncTaskCompleteListe
         // Insert the fragment by replacing any existing fragment
         replaceDynamicFragment(fragment,R.id.layout_main_to_replace, TAG_REPLACE);
 
-          // Highlight the selected item, update the title, and close the drawer
-            mDrawerList.setItemChecked(position, true);
-            mDrawerLayout.closeDrawer(mDrawerList);
+        // Highlight the selected item, update the title, and close the drawer
+        mDrawerList.setItemChecked(position, true);
+        mDrawerLayout.closeDrawer(mDrawerList);
 
     }
 
     @Override
     public void onCountrySelected(String country) {
-
         Fragment fragment = SearchFragment.newInstance(country);
         replaceDynamicFragment(fragment, R.id.layout_main_to_replace, "SEARCH_FRAGMENT");
-
-
     }
 
 

@@ -62,7 +62,7 @@ public class ItemAdapter extends BaseAdapter {
             container.title.setText(item.getTitle());
             container.price.setText(item.getPrice());
             container.id.setText(item.getId());
-            Picasso.with(lInflater.getContext()).load(item.getPicture()).resize(100,100).into(container.pic);
+            Picasso.with(lInflater.getContext()).load(item.getThumbnail()).resize(100,100).into(container.pic);
 
   //      new GetImageListAsyncTask(container.pic).execute(item.getPicture());
 

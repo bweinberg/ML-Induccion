@@ -10,8 +10,10 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,14 +22,27 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import com.mercadolibre.dto.Item;
+import com.mercadolibre.dto.Paging;
+import com.mercadolibre.dto.Search;
 import com.mercadolibre.fragments.CountrySelectorFragment;
 import com.mercadolibre.fragments.ItemDetailFragment;
 import com.mercadolibre.fragments.ListItemFragment;
 import com.mercadolibre.fragments.SearchFragment;
+import com.mercadolibre.services.SearchService;
 import com.mercadolibre.tasks.GetImagesAsyncTask;
 import com.mercadolibre.tasks.GetItemDetailAsyncTask;
 import com.mercadolibre.tasks.GetItemsAsyncTask;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 
 public class MainActivity extends ListActivity implements AsyncTaskCompleteListener, SearchFragment.SearchListener, ListItemFragment.ListItemListener, ItemDetailFragment.ItemDetailListener, CountrySelectorFragment.CountrySelectorListener {
@@ -36,8 +51,13 @@ public class MainActivity extends ListActivity implements AsyncTaskCompleteListe
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
 
+    static JSONObject paging = null;
+    static JSONArray items = null;
+
+
+
     // Search total. Convert to int.
-    private static String total = "";
+    static String total = "";
 
     // Search in progress
     private static ProgressDialog pDialog;
@@ -58,6 +78,10 @@ public class MainActivity extends ListActivity implements AsyncTaskCompleteListe
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     public void onCreate(Bundle savedInstanceState) {
 
+        StrictMode.ThreadPolicy policy = new
+                StrictMode.ThreadPolicy.Builder()
+                .permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_layout);
         pDialog = new ProgressDialog(this);
@@ -234,13 +258,42 @@ public class MainActivity extends ListActivity implements AsyncTaskCompleteListe
 
 
     @Override
-    public void onQuerySelected(String query, String site) {
+    public void onQuerySelected(String query, final String site) {
 
         pDialog.setMessage("Cargando...");
         pDialog.show();
         mLastQuery = query;
 
-        new GetItemsAsyncTask(this, mLastQuery, site, false).execute();
+
+        Callback callback = new Callback<Search>() {
+            @Override
+            public void success(Search result, Response response) {
+
+                Log.d("SUCESS!", result.getSite_id());
+                ArrayList<Item> items = result.getResults();
+                Paging paging = result.getPaging();
+
+                onTaskComplete(items, paging.getTotal(), result.getSite_id(), false);
+
+            }
+
+            @Override
+            public void failure(RetrofitError retrofitError) {
+                Log.d("FAILURE!", retrofitError.toString());
+
+            }
+        };
+
+
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setServer("https://api.mercadolibre.com") // The base API endpoint.
+                .build();
+
+        SearchService endpoint = restAdapter.create(SearchService.class);
+        endpoint.getItems(site, callback);
+
+
+      //  new GetItemsAsyncTask(this, mLastQuery, site, false).execute();
 
     }
 

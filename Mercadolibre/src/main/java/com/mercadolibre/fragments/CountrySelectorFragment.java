@@ -19,6 +19,7 @@ import com.mercadolibre.activities.R;
 import java.util.Arrays;
 import java.util.List;
 
+
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class CountrySelectorFragment extends ListFragment {
 
@@ -41,6 +42,7 @@ public class CountrySelectorFragment extends ListFragment {
 
     public static Fragment newInstance() {
         CountrySelectorFragment mFrgment = new CountrySelectorFragment();
+
         return mFrgment;
     }
 

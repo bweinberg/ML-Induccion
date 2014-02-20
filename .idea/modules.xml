@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Mercadolibre.iml" filepath="$PROJECT_DIR$/Mercadolibre.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Mercadolibre/Mercadolibre-Mercadolibre.iml" filepath="$PROJECT_DIR$/Mercadolibre/Mercadolibre-Mercadolibre.iml" />
+    </modules>
+  </component>
+</project>
+

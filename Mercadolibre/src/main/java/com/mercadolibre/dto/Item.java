@@ -1,7 +1,5 @@
 package com.mercadolibre.dto;
 
-import android.graphics.Bitmap;
-
 import java.io.Serializable;
 
 public class Item implements Serializable {
@@ -9,18 +7,18 @@ public class Item implements Serializable {
     private String id;
     private String title;
     private String price;
-    private String picture;
-    private String available;
-    private String endDate;
+    private String thumbnail;
+    private String available_quantity;
+    private String stop_time;
 
 
-    public Item(String id, String title, String price, String picture, String available, String endDate) {
+    public Item(String id, String title, String price, String thumbnail, String available_quantity, String stop_time) {
         this.id = id;
         this.title = title;
         this.price = price;
-        this.picture = picture;
-        this.available = available;
-        this.endDate = endDate;
+        this.thumbnail = thumbnail;
+        this.available_quantity = available_quantity;
+        this.stop_time = stop_time;
     }
 
     public String getId() {
@@ -48,27 +46,27 @@ public class Item implements Serializable {
         this.price = price;
     }
 
-    public String getPicture() {
-        return picture;
+    public String getThumbnail() {
+        return thumbnail;
     }
 
-    public void setPicture(String picture) {
-        this.picture = picture;
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
     }
 
-    public String getAvailable() {
-        return available;
+    public String getAvailable_quantity() {
+        return available_quantity;
     }
 
-    public void setAvailable(String available) {
-        this.available = available;
+    public void setAvailable_quantity(String available_quantity) {
+        this.available_quantity = available_quantity;
     }
 
-    public String getEndDate() {
-        return endDate;
+    public String getStop_time() {
+        return stop_time;
     }
 
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
+    public void setStop_time(String stop_time) {
+        this.stop_time = stop_time;
     }
 }

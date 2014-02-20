@@ -33,8 +33,6 @@ public class ItemDetailFragment extends ListFragment {
     static private TextView availableTv;
     static private TextView endDateTv;
     static private ImageView picIv;
-    private static final int MAX_IMAGE_SIZE = 900;
-
 
 
     @Override
@@ -75,11 +73,11 @@ public class ItemDetailFragment extends ListFragment {
         priceTv = (TextView)view.findViewById(R.id.price);
         priceTv.setText(itemSelected.getPrice());
         availableTv = (TextView)view.findViewById(R.id.available);
-        availableTv.setText(itemSelected.getAvailable());
+        availableTv.setText(itemSelected.getAvailable_quantity());
         endDateTv = (TextView)view.findViewById(R.id.end_date);
         picIv = (ImageView)view.findViewById(R.id.pic);
         Picasso.with(getActivity())
-               .load(itemSelected.getPicture())
+               .load(itemSelected.getThumbnail())
                .into(picIv);
 
         //  .resize(MAX_IMAGE_SIZE, MAX_IMAGE_SIZE)
@@ -91,7 +89,7 @@ public class ItemDetailFragment extends ListFragment {
 
         try {
 
-            formattedDate = sdf.parse(itemSelected.getEndDate());
+            formattedDate = sdf.parse(itemSelected.getStop_time());
             SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MM-yyyy");
             timeLast= timeLast+sdf2.format(formattedDate);
 

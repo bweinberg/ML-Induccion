@@ -68,12 +68,13 @@ public class ItemDetailFragment extends ListFragment {
 
     public void onViewCreated(View view, Bundle savedInstanceState){
 
+
         titleTv = (TextView)view.findViewById(R.id.title);
         titleTv.setText(itemSelected.getTitle());
         priceTv = (TextView)view.findViewById(R.id.price);
         priceTv.setText(itemSelected.getPrice());
         availableTv = (TextView)view.findViewById(R.id.available);
-        availableTv.setText(itemSelected.getAvailable_quantity());
+        availableTv.setText(String.valueOf(itemSelected.getAvailable_quantity()));
         endDateTv = (TextView)view.findViewById(R.id.end_date);
         picIv = (ImageView)view.findViewById(R.id.pic);
         Picasso.with(getActivity())

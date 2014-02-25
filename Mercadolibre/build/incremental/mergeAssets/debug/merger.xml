@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merger>
 
-    <dataSet config="ComAndroidSupportAppcompatV71900.aar" >
-        <source path="/Users/bweinberg/Downloads/Mercadolibre/Mercadolibre/build/exploded-bundles/ComAndroidSupportAppcompatV71900.aar/assets" />
-    </dataSet>
     <dataSet config="ComAndroidSupportGridlayoutV71900.aar" >
         <source path="/Users/bweinberg/Downloads/Mercadolibre/Mercadolibre/build/exploded-bundles/ComAndroidSupportGridlayoutV71900.aar/assets" />
+    </dataSet>
+    <dataSet config="ComAndroidSupportAppcompatV71901.aar" >
+        <source path="/Users/bweinberg/Downloads/Mercadolibre/Mercadolibre/build/exploded-bundles/ComAndroidSupportAppcompatV71901.aar/assets" />
     </dataSet>
     <dataSet config="main" >
         <source path="/Users/bweinberg/Downloads/Mercadolibre/Mercadolibre/src/main/assets" />

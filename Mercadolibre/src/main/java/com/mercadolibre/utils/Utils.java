@@ -10,6 +10,7 @@ import java.net.URL;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
@@ -17,7 +18,10 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.ImageView;
 
+import com.mercadolibre.activities.MainActivity;
+import com.mercadolibre.activities.R;
 import com.squareup.picasso.Picasso;
 
 
@@ -53,66 +57,22 @@ public class Utils {
         return jsonString;
     }
 
-    public static boolean isNetworkAvailable(Activity activity) {
-        ConnectivityManager connectivity = (ConnectivityManager) activity
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivity == null) {
-            return false;
-        } else {
-            NetworkInfo[] info = connectivity.getAllNetworkInfo();
-            if (info != null) {
-                for (int i = 0; i < info.length; i++) {
-                    if (info[i].getState() == NetworkInfo.State.CONNECTED) {
-                        return true;
-                    }
-                }
-            }
+    public static String getCurrentCountry(Activity context) {
+
+        SharedPreferences sharedPref = context.getPreferences(Context.MODE_PRIVATE);
+        String site = "MLA";
+        String countrySelected = sharedPref.getString(context.getString(R.string.preferred_country), "Argentina");
+        if(countrySelected.equals("Brasil")){
+            site = "MLB";
+        }else if(countrySelected.equals("Argentina")){
+            site = "MLA";
+        }else if(countrySelected.equals("Uruguay")){
+            site = "MLU";
         }
-        return false;
+
+        return site;
+
     }
-
-
-
-    @TargetApi(Build.VERSION_CODES.FROYO)
-    public static String encodeTobase64(Bitmap image)
-    {
-        Bitmap immagex=image;
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        immagex.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] b = baos.toByteArray();
-        String imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
-
-        Log.e("LOOK", imageEncoded);
-        return imageEncoded;
-    }
-
-    @TargetApi(Build.VERSION_CODES.FROYO)
-    public static Bitmap decodeBase64(String input)
-    {
-        byte[] decodedByte = Base64.decode(input, 0);
-        return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
-    }
-
-//    public static PictureByteArray getUploadablePicture(Context context, String picture) {
-//        PictureByteArray byteArray = null;
-//
-//        try {
-//            Bitmap bitmap = Picasso.with(context)
-//                    .load(new File(picture))
-//                    .skipMemoryCache()
-//                    .resize(MAX_IMAGE_SIZE, MAX_IMAGE_SIZE)
-//                    .centerInside()
-//                    .get();
-//
-//            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//            bitmap.compress(Bitmap.CompressFormat.JPEG, JPEG_IMAGE_COMPRESSION, stream);
-//
-//            byteArray = new PictureByteArray("image/jpeg", stream.toByteArray());
-//            bitmap.recycle(); stream.close();
-//        } catch (IOException e) {}
-//
-//        return byteArray;
-//    }
 
 }
 

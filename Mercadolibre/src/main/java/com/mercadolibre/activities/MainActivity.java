@@ -1,44 +1,40 @@
 package com.mercadolibre.activities;
 
+import android.app.AlarmManager;
 import android.app.Fragment;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
-import android.content.res.Configuration;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.StrictMode;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
+
 import com.mercadolibre.dto.Item;
 import com.mercadolibre.dto.Paging;
 import com.mercadolibre.dto.Search;
-import com.mercadolibre.fragments.CountrySelectorFragment;
 import com.mercadolibre.fragments.ItemDetailFragment;
 import com.mercadolibre.fragments.ListItemFragment;
 import com.mercadolibre.fragments.SearchFragment;
+import com.mercadolibre.services.ExampleService;
 import com.mercadolibre.services.SearchService;
-import com.mercadolibre.tasks.GetImagesAsyncTask;
 import com.mercadolibre.utils.Utils;
+
 import java.util.ArrayList;
+import java.util.Calendar;
+
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class MainActivity extends ActionBarActivity implements AsyncTaskCompleteListener, SearchFragment.SearchListener, ListItemFragment.ListItemListener, ItemDetailFragment.ItemDetailListener, CountrySelectorFragment.CountrySelectorListener {
-
-    private String[] mmenuList;
-    private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList;
+public class MainActivity extends ActionBarActivity implements AsyncTaskCompleteListener, SearchFragment.SearchListener, ListItemFragment.ListItemListener, ItemDetailFragment.ItemDetailListener {
 
     // Search total. Convert to int.
     static String total = "";
@@ -48,66 +44,39 @@ public class MainActivity extends ActionBarActivity implements AsyncTaskComplete
 
 
     private static String mLastQuery;
-    private static String TAG_REPLACE = "";
     private MenuItem searchItem = null;
-    private ActionBarDrawerToggle mDrawerToggle;
 
     // Hashmap for ListView
     private static ArrayList<Item> itemList = new ArrayList<Item>();
-    RestAdapter restAdapter = new RestAdapter.Builder()
-            .setServer("https://api.mercadolibre.com") // The base API endpoint.
+
+    private RestAdapter restAdapter = new RestAdapter.Builder()
+            .setEndpoint("https://api.mercadolibre.com") // The base API endpoint.
             .build();
-    SearchService endpoint = restAdapter.create(SearchService.class);
-    private static String site;
+    private SearchService endpoint = restAdapter.create(SearchService.class);
     private static boolean inSettings = true;
 
     public void onCreate(Bundle savedInstanceState) {
 
-        StrictMode.ThreadPolicy policy = new
-                StrictMode.ThreadPolicy.Builder()
-                .permitAll().build();
-        StrictMode.setThreadPolicy(policy);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_layout);
         pDialog = new ProgressDialog(this);
 
-//        mmenuList = new String[]{"Buscar", "Cambiar país"};
-//        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        mDrawerList = (ListView) findViewById(R.id.left_drawer);
-//
-//        // Set the adapter for the list view
-//        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-//                R.layout.drawer_list_item, mmenuList));
-//        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-//        mDrawerToggle = new ActionBarDrawerToggle(
-//                this,                  /* host Activity */
-//                mDrawerLayout,         /* DrawerLayout object */
-//                R.drawable.ic_drawer,  /* nav drawer icon to replace 'Up' caret */
-//                R.string.app_name,  /* "open drawer" description */
-//                R.string.app_name  /* "close drawer" description */
-//        ) {
-//            /** Called when a drawer has settled in a completely closed state. */
-//            public void onDrawerClosed(View view) {
-//                super.onDrawerClosed(view);
-//            }
-//
-//            /** Called when a drawer has settled in a completely open state. */
-//            public void onDrawerOpened(View drawerView) {
-//                super.onDrawerOpened(drawerView);
-//            }
-//        };
-//
-//        // Set the drawer toggle as the DrawerListener
-//        mDrawerLayout.setDrawerListener(mDrawerToggle);
-       // getActionBar().setDisplayHomeAsUpEnabled(true);
-//        //getActionBar().setHomeButtonEnabled(true);
-
         //Add search fragment
         if(savedInstanceState==null){
 
+            //sets the "app is ready" notification every five minutes
+            Calendar cal = Calendar.getInstance();
+            AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(this, ExampleService.class);
+            PendingIntent pintent = PendingIntent.getService(this, 0, intent, 0);
+            alarm.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),
+                    300000, pintent);
+            startService(intent);
             Fragment sf = SearchFragment.newInstance(Utils.getCurrentCountry(this));
             sf.setRetainInstance(true);
             addDynamicFragment(sf, R.id.layout_main_to_replace);
+
 
         }
 
@@ -147,18 +116,6 @@ public class MainActivity extends ActionBarActivity implements AsyncTaskComplete
 
     }
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-//        mDrawerToggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
- //       mDrawerToggle.onConfigurationChanged(newConfig);
-    }
 
 
     public void addDynamicFragment(Fragment fg, int layout) {
@@ -344,59 +301,6 @@ public class MainActivity extends ActionBarActivity implements AsyncTaskComplete
 
     }
 
-    @Override
-    public void getImage(String url) {
-
-        new GetImagesAsyncTask(this, url).execute();
-
-    }
-
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView parent, View view, int position, long id) {
-            selectItem(position);
-        }
-    }
-
-    /**
-     * Swaps fragments in the main content view
-     */
-    private void selectItem(int position) {
-
-        Fragment fragment = null;
-
-        switch (position) {
-            case 0:
-                TAG_REPLACE = "SEARCH_FRAGMENT";
-                if (getFragmentManager().findFragmentByTag("SEARCH_FRAGMENT") != null) {
-                    fragment = getFragmentManager().findFragmentByTag("SEARCH_FRAGMENT");
-                } else
-                    fragment = SearchFragment.newInstance("Argentina");
-                    fragment.setRetainInstance(true);
-
-                break;
-            case 1:
-                fragment = CountrySelectorFragment.newInstance();
-                fragment.setRetainInstance(true);
-                TAG_REPLACE = "COUNTRY_FRAGMENT";
-                break;
-        }
-
-        // Insert the fragment by replacing any existing fragment
-        replaceDynamicFragment(fragment, R.id.layout_main_to_replace, TAG_REPLACE);
-
-        // Highlight the selected item, update the title, and close the drawer
-        mDrawerList.setItemChecked(position, true);
-        mDrawerLayout.closeDrawer(mDrawerList);
-
-    }
-
-    @Override
-    public void onCountrySelected(String country) {
-        Fragment fragment = SearchFragment.newInstance(country);
-        fragment.setRetainInstance(true);
-        replaceDynamicFragment(fragment, R.id.layout_main_to_replace, "SEARCH_FRAGMENT");
-    }
 
 
 }

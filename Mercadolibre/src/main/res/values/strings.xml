@@ -5,6 +5,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Configuracion</string>
     <string name="preferred_country">Preferred country</string>
+    <string name="service_started">Ya esta disponible Mercadolibre app!</string>
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
     <color name="yellow">#fffaf0</color>

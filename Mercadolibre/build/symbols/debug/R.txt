@@ -249,8 +249,9 @@ int drawable ic_launcher 0x7f020059
 int drawable logo_mercadolibre_argentina 0x7f02005a
 int drawable logo_mercadolibre_brasil 0x7f02005b
 int drawable ml_app_icon 0x7f02005c
-int drawable splash_logo 0x7f02005d
-int drawable splash_logo_mlb 0x7f02005e
+int drawable notification_icon 0x7f02005d
+int drawable splash_logo 0x7f02005e
+int drawable splash_logo_mlb 0x7f02005f
 int id action_bar 0x7f08002d
 int id action_bar_activity_content 0x7f080025
 int id action_bar_container 0x7f08002c
@@ -405,6 +406,7 @@ int string action_settings 0x7f0b000d
 int string app_name 0x7f0b000e
 int string hello_world 0x7f0b000f
 int string preferred_country 0x7f0b0010
+int string service_started 0x7f0b0011
 int style AppTheme 0x7f0c0000
 int style TextAppearance_AppCompat_Base_CompactMenu_Dialog 0x7f0c0001
 int style TextAppearance_AppCompat_Base_SearchResult 0x7f0c0002

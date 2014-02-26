@@ -7937,6 +7937,10 @@ false
 
                 <color name="white" >#ffffff
                 </color>
+
+                <string name="service_started" >Ya esta disponible Mercadolibre app!
+                </string>
+
                 <color name="black" >#000000
                 </color>
 
@@ -7998,6 +8002,26 @@ false
                 <dimen name="activity_horizontal_margin" >64dp
                 </dimen>
             </file>
+            <file
+                name="notification_icon"
+                path="/Users/bweinberg/Downloads/Mercadolibre/Mercadolibre/src/main/res/drawable-xxhdpi/notification_icon.png"
+                qualifiers="xxhdpi"
+                type="drawable" />
+            <file
+                name="notification_icon"
+                path="/Users/bweinberg/Downloads/Mercadolibre/Mercadolibre/src/main/res/drawable-hdpi/notification_icon.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="notification_icon"
+                path="/Users/bweinberg/Downloads/Mercadolibre/Mercadolibre/src/main/res/drawable-mdpi/notification_icon.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="notification_icon"
+                path="/Users/bweinberg/Downloads/Mercadolibre/Mercadolibre/src/main/res/drawable-xhdpi/notification_icon.png"
+                qualifiers="xhdpi"
+                type="drawable" />
         </source>
         <source path="/Users/bweinberg/Downloads/Mercadolibre/Mercadolibre/build/res/rs/debug" />
         <source path="/Users/bweinberg/Downloads/Mercadolibre/Mercadolibre/build/res/generated/debug" />

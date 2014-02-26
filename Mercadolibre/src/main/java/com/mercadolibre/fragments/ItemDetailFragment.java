@@ -20,7 +20,6 @@ public class ItemDetailFragment extends ListFragment {
 
     public interface ItemDetailListener {
 
-        void getImage(String url);
     }
 
     static private ItemDetailListener myListener;

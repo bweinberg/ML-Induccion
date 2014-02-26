@@ -1064,8 +1064,9 @@ containing a value of this type.
         public static final int logo_mercadolibre_argentina=0x7f02005a;
         public static final int logo_mercadolibre_brasil=0x7f02005b;
         public static final int ml_app_icon=0x7f02005c;
-        public static final int splash_logo=0x7f02005d;
-        public static final int splash_logo_mlb=0x7f02005e;
+        public static final int notification_icon=0x7f02005d;
+        public static final int splash_logo=0x7f02005e;
+        public static final int splash_logo_mlb=0x7f02005f;
     }
     public static final class id {
         public static final int action_bar=0x7f08002d;
@@ -1230,6 +1231,7 @@ containing a value of this type.
         public static final int app_name=0x7f0b000e;
         public static final int hello_world=0x7f0b000f;
         public static final int preferred_country=0x7f0b0010;
+        public static final int service_started=0x7f0b0011;
     }
     public static final class style {
         /**  Customize your theme here. 

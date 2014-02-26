@@ -728,6 +728,7 @@
     <string name="app_name">MercadoLibre</string>
     <string name="hello_world">Hello world!</string>
     <string name="preferred_country">Preferred country</string>
+    <string name="service_started">Ya esta disponible Mercadolibre app!</string>
     <!-- From: file:/Users/bweinberg/Downloads/Mercadolibre/Mercadolibre/src/main/res/values/styles.xml -->
     <eat-comment />
 

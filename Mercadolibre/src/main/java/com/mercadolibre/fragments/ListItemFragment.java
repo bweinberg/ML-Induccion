@@ -80,8 +80,6 @@ public class ListItemFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 myListener.onItemSelected(((TextView) view.findViewById(R.id.id_item_list)).getText().toString());
-                view.setBackgroundColor(Color.rgb(200,243,245));
-
             }
         });
 

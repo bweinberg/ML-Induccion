@@ -9,11 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.mercadolibre.activities.R;
 import com.mercadolibre.dto.Item;
 import com.squareup.picasso.Picasso;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -42,8 +40,6 @@ public class ItemDetailFragment extends ListFragment {
 
         myListener = (ItemDetailListener) getActivity();
 
-      //  myListener.getImage(itemSelected.getPicture());
-
     }
 
 
@@ -57,7 +53,7 @@ public class ItemDetailFragment extends ListFragment {
                              Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
+        setHasOptionsMenu(false);
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_item, null);
 
@@ -81,8 +77,6 @@ public class ItemDetailFragment extends ListFragment {
                .load(itemSelected.getPictures().get(0).getUrl())
                .into(picIv);
 
-        //  .resize(MAX_IMAGE_SIZE, MAX_IMAGE_SIZE)
-
         String timeLast = "Finaliza en: ";
 
         Date formattedDate;
@@ -90,9 +84,9 @@ public class ItemDetailFragment extends ListFragment {
 
         try {
 
-            formattedDate = sdf.parse(itemSelected.getStop_time());
+           formattedDate = sdf.parse(itemSelected.getStop_time());
             SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MM-yyyy");
-            timeLast= timeLast+sdf2.format(formattedDate);
+           timeLast= timeLast+sdf2.format(formattedDate);
 
         } catch (ParseException e) {
             e.printStackTrace();

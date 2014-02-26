@@ -2,9 +2,7 @@ package com.mercadolibre.dto;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
 
 /**
  * Created by bweinberg on 18/02/14.

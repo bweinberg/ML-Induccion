@@ -1,19 +1,15 @@
 package com.mercadolibre.adapters;
 
-import java.util.ArrayList;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.mercadolibre.activities.MainActivity;
 import com.mercadolibre.activities.R;
 import com.mercadolibre.dto.Item;
-import com.mercadolibre.tasks.GetImageListAsyncTask;
 import com.squareup.picasso.Picasso;
+import java.util.ArrayList;
 
 
 public class ItemAdapter extends BaseAdapter {
@@ -63,7 +59,7 @@ public class ItemAdapter extends BaseAdapter {
             container.price.setText(item.getPrice());
             container.id.setText(item.getId());
             if(item.getThumbnail()!=""){
-                Picasso.with(lInflater.getContext()).load(item.getThumbnail()).resize(100,100).into(container.pic);
+               Picasso.with(lInflater.getContext()).load(item.getThumbnail()).resize(100,100).into(container.pic);
             }
 
   //      new GetImageListAsyncTask(container.pic).execute(item.getPicture());

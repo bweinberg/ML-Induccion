@@ -1,16 +1,11 @@
 package com.mercadolibre.tasks;
 
-import android.app.Activity;
-import android.app.Fragment;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.view.View;
-
 import com.mercadolibre.activities.AsyncTaskCompleteListener;
-import com.squareup.picasso.Picasso;
-
 import java.io.InputStream;
 
 public class GetImagesAsyncTask extends AsyncTask<Object, String, Bitmap> {

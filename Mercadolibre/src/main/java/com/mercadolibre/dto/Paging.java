@@ -1,7 +1,6 @@
 package com.mercadolibre.dto;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 /**
  * Created by bweinberg on 20/02/14.

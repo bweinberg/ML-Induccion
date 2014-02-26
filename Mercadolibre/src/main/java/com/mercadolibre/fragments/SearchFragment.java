@@ -8,9 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import com.mercadolibre.activities.R;
 
 
@@ -54,7 +52,7 @@ public class SearchFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, null);
         ImageView icon = (ImageView)view.findViewById(R.id.icon);
         icon.setImageResource(R.drawable.splash_logo);
-
+        setHasOptionsMenu(true);
 //        button.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -67,5 +65,6 @@ public class SearchFragment extends Fragment {
         return view;
 
     }
+
 
 }

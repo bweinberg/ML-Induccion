@@ -7,22 +7,12 @@ public class Item implements Serializable {
 
     private String id;
     private String title;
-    private float price;
+    private String price;
     private String thumbnail;
-    private int available_quantity;
+    private String available_quantity;
     private String stop_time;
     private List<Picture> pictures;
 
-
-    public Item(String id, String title, float price, String thumbnail, int available_quantity, String stop_time, List<Picture> pictures) {
-        this.id = id;
-        this.title = title;
-        this.price = price;
-        this.thumbnail = thumbnail;
-        this.available_quantity = available_quantity;
-        this.stop_time = stop_time;
-        this.pictures = pictures;
-    }
 
     public String getId() {
 
@@ -45,7 +35,7 @@ public class Item implements Serializable {
         return "$ " + price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 
@@ -57,11 +47,11 @@ public class Item implements Serializable {
         this.thumbnail = thumbnail;
     }
 
-    public float getAvailable_quantity() {
+    public String getAvailable_quantity() {
         return available_quantity;
     }
 
-    public void setAvailable_quantity(int available_quantity) {
+    public void setAvailable_quantity(String available_quantity) {
         this.available_quantity = available_quantity;
     }
 

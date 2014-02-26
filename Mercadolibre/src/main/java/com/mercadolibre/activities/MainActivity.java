@@ -49,7 +49,7 @@ public class MainActivity extends ActionBarActivity implements AsyncTaskComplete
 
     private static String mLastQuery;
     private static String TAG_REPLACE = "";
-
+    private MenuItem searchItem = null;
     private ActionBarDrawerToggle mDrawerToggle;
 
     // Hashmap for ListView
@@ -117,7 +117,8 @@ public class MainActivity extends ActionBarActivity implements AsyncTaskComplete
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.main, menu);
-        final MenuItem searchItem = menu.findItem(R.id.action_search);
+        searchItem = menu.findItem(R.id.action_search);
+
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -141,10 +142,8 @@ public class MainActivity extends ActionBarActivity implements AsyncTaskComplete
 
         if(item.getTitle().equals("MercadoLibre")){
                 backFromSettingsFragment();
-                return  true;
         }
-
-                return  super.onOptionsItemSelected(item);
+        return  super.onOptionsItemSelected(item);
 
     }
 
@@ -189,8 +188,6 @@ public class MainActivity extends ActionBarActivity implements AsyncTaskComplete
         }
 
         total = totalResults;
-
-
         SearchFragment searchFragment = (SearchFragment) getFragmentManager().findFragmentByTag("SEARCH_FRAGMENT");
 
         if (searchFragment.isVisible()) {
@@ -222,11 +219,16 @@ public class MainActivity extends ActionBarActivity implements AsyncTaskComplete
         ListItemFragment listItemFragment = (ListItemFragment) getFragmentManager().findFragmentByTag("LIST_FRAGMENT");
 
         if (listItemFragment.isVisible()) {
+
+
             Fragment dif = ItemDetailFragment.newInstance(item);
             dif.setRetainInstance(true);
             replaceDynamicFragment(dif, R.id.layout_main_to_replace, "ITEM_FRAGMENT");
-            getActionBar().setDisplayHomeAsUpEnabled(false);
-            getActionBar().setDisplayShowHomeEnabled(true);
+            searchItem.setVisible(false);
+
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+          //  getActionBar().setDisplayShowHomeEnabled(true);
+
         }
 
     }
@@ -235,7 +237,8 @@ public class MainActivity extends ActionBarActivity implements AsyncTaskComplete
     @Override
     public void onBackPressed()
     {
-        
+        searchItem.setVisible(true);
+
         if (inSettings)
         {
             backFromSettingsFragment();
@@ -272,12 +275,9 @@ public class MainActivity extends ActionBarActivity implements AsyncTaskComplete
             @Override
             public void success(Search result, Response response) {
 
-                Log.d("SUCESS!", response.toString());
-
                 ArrayList<Item> items = result.getResults();
                 Paging paging = result.getPaging();
                 onTaskComplete(items, paging.getTotal(), result.getSite_id(), false);
-
 
             }
 
@@ -287,7 +287,6 @@ public class MainActivity extends ActionBarActivity implements AsyncTaskComplete
 
             }
         };
-
 
         endpoint.getItems(site, query, callback);
         //new GetItemsAsyncTask(this, mLastQuery, site, false).execute();
@@ -351,7 +350,6 @@ public class MainActivity extends ActionBarActivity implements AsyncTaskComplete
         new GetImagesAsyncTask(this, url).execute();
 
     }
-
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override

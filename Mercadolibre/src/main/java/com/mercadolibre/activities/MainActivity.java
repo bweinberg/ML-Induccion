@@ -14,20 +14,17 @@ import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-
 import com.mercadolibre.dto.Item;
 import com.mercadolibre.dto.Paging;
 import com.mercadolibre.dto.Search;
 import com.mercadolibre.fragments.ItemDetailFragment;
 import com.mercadolibre.fragments.ListItemFragment;
 import com.mercadolibre.fragments.SearchFragment;
-import com.mercadolibre.services.ExampleService;
+import com.mercadolibre.services.NotificationService;
 import com.mercadolibre.services.SearchService;
 import com.mercadolibre.utils.Utils;
-
 import java.util.ArrayList;
 import java.util.Calendar;
-
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -61,22 +58,32 @@ public class MainActivity extends ActionBarActivity implements AsyncTaskComplete
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_layout);
         pDialog = new ProgressDialog(this);
+        String newString;
+        Bundle extras = getIntent().getExtras();
 
-        //Add search fragment
+        if(extras == null) {
+            newString= null;
+        } else {
+            newString= extras.getString("isNotification");
+        }        //Add search fragment
         if(savedInstanceState==null){
-
-            //sets the "app is ready" notification every five minutes
-            Calendar cal = Calendar.getInstance();
-            AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-            Intent intent = new Intent(this, ExampleService.class);
-            PendingIntent pintent = PendingIntent.getService(this, 0, intent, 0);
-            alarm.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),
-                    300000, pintent);
-            startService(intent);
             Fragment sf = SearchFragment.newInstance(Utils.getCurrentCountry(this));
-            sf.setRetainInstance(true);
-            addDynamicFragment(sf, R.id.layout_main_to_replace);
 
+            if(newString==null){
+                //sets the "app is ready" notification every five minutes
+                Calendar cal = Calendar.getInstance();
+                AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                Intent intent = new Intent(this, NotificationService.class);
+                PendingIntent pintent = PendingIntent.getService(this, 0, intent, 0);
+                alarm.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),
+                        300000, pintent);
+                startService(intent);
+                sf.setRetainInstance(true);
+                addDynamicFragment(sf, R.id.layout_main_to_replace);
+            }else{
+                getFragmentManager().beginTransaction().add(R.id.layout_main_to_replace, sf, "SEARCH_FRAGMENT").addToBackStack("FRAGMENT_BACKSTACK").commit();
+                onQuerySelected("ipod touch", Utils.getCurrentCountry(MainActivity.this));
+            }
 
         }
 
@@ -147,7 +154,7 @@ public class MainActivity extends ActionBarActivity implements AsyncTaskComplete
         total = totalResults;
         SearchFragment searchFragment = (SearchFragment) getFragmentManager().findFragmentByTag("SEARCH_FRAGMENT");
 
-        if (searchFragment.isVisible()) {
+        if (searchFragment== null || searchFragment.isVisible()) {
 
 
             Fragment lf = ListItemFragment.newInstance(itemList, total, mLastQuery, site);

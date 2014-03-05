@@ -11,7 +11,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <service android:exported="false" android:name="com.mercadolibre.services.ExampleService"/>
+        <service android:exported="false" android:name="com.mercadolibre.services.NotificationService"/>
     </application>
 
 </manifest>

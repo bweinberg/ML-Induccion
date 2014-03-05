@@ -1,14 +1,12 @@
 package com.mercadolibre.services;
 
 import android.app.IntentService;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
-
 import com.mercadolibre.activities.MainActivity;
 import com.mercadolibre.activities.R;
 
@@ -17,6 +15,7 @@ import com.mercadolibre.activities.R;
  */
 public class NotificationService extends IntentService{
 
+    static int notificationCounter = 0;
 
     public NotificationService() {
         super("NotificationService");
@@ -49,7 +48,8 @@ public class NotificationService extends IntentService{
 
         NotificationManager mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(123, builder.build());
+        mNotificationManager.cancelAll();
+        mNotificationManager.notify(notificationCounter++, builder.build());
 
 
     }

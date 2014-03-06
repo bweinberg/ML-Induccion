@@ -128,6 +128,7 @@ public class MainActivity extends ActionBarActivity implements AsyncTaskComplete
     public void addDynamicFragment(Fragment fg, int layout) {
         getFragmentManager().beginTransaction().add(layout, fg, "SEARCH_FRAGMENT").addToBackStack("FRAGMENT_BACKSTACK").commit();
         getActionBar().setDisplayHomeAsUpEnabled(false);
+
     }
 
     public void replaceDynamicFragment(Fragment fg, int layout, String tag) {
@@ -202,18 +203,19 @@ public class MainActivity extends ActionBarActivity implements AsyncTaskComplete
     public void onBackPressed()
     {
         searchItem.setVisible(true);
+        backFromSettingsFragment();
 
-        if (inSettings)
-        {
-            backFromSettingsFragment();
-            return;
-        }
-        super.onBackPressed();
     }
 
     private void backFromSettingsFragment()
     {
-        getFragmentManager().popBackStack();
+        getFragmentManager().popBackStackImmediate();
+        SearchFragment homeFragment = (SearchFragment) getFragmentManager().findFragmentByTag("SEARCH_FRAGMENT");
+
+        if(homeFragment.isVisible()){
+            getActionBar().setDisplayHomeAsUpEnabled(false);
+        }
+
     }
 
     @Override
